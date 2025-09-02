@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz App</title>
+  <script src="https://unpkg.com/realm-web/dist/bundle.iife.js"></script>
+</head>
+<body>
+  <h1>Quiz Sualları</h1>
+  <div id="quiz-container"></div>
+
+  <script>
+    const app = new Realm.App({ id: "quizdb-zuczrgj" });
+
+    async function loginAnonymous() {
+      return await app.logIn(Realm.Credentials.anonymous());
+    }
+
+    async function fetchQuestions() {
+      const user = await loginAnonymous();
+      const mongodb = user.mongoClient("mongodb-atlas");
+      const questionsCollection = mongodb.db("QuizDB").collection("questions");
+
+      const questions = await questionsCollection.find({});
+      displayQuestions(questions);
+    }
+
+    function displayQuestions(questions) {
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = "";
+
+      questions.forEach((q, index) => {
+        const div = document.createElement("div");
+        div.style.border = "1px solid #ccc";
+        div.style.margin = "10px";
+        div.style.padding = "10px";
+
+        // Mövzu və sual
+        const topic = document.createElement("h3");
+        topic.textContent = `${index + 1}. ${q.topic}`;
+        div.appendChild(topic);
+
+        const text = document.createElement("p");
+        text.textContent = q.text;
+        div.appendChild(text);
+
+        // Seçimlər
+        q.options.forEach((opt, i) => {
+          const button = document.createElement("button");
+          button.textContent = opt;
+          button.style.margin = "5px";
+
+          button.onclick = () => {
+            if (i === q.correctOptionIndex) {
+              alert("Doğru cavab! ✅\n" + q.explainAnswer);
+            } else {
+              alert("Səhv cavab! ❌\nDoğru cavab: " + q.options[q.correctOptionIndex]);
+            }
+          };
+
+          div.appendChild(button);
+        });
+
+        container.appendChild(div);
+      });
+    }
+
+    fetchQuestions();
+  </script>
+</body>
+</html>
