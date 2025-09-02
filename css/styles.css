@@ -1,0 +1,42 @@
+     @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        .tab {
+            border-bottom-width: 4px;
+            border-color: transparent;
+        }
+        .tab.active {
+            border-color: #4a6fa5;
+            font-weight: bold;
+            color: #4a6fa5;
+            background-color: white;
+        }
+        .circle-bg {
+            fill: none;
+            stroke: #e5e7eb;
+            stroke-width: 6;
+        }
+        .circle-fg {
+            fill: none;
+            stroke: #4a6fa5;
+            stroke-width: 6;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s ease;
+        }
+        .option.selected {
+            border-color: #4a6fa5;
+            background-color: #eff6ff;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #4a6fa5;
+            border-radius: 5px;
+            transition: width 0.8s ease;
+        }
+        .performance-chart canvas {
+            max-height: 200px !important; /* Compact chart height */
+        }
